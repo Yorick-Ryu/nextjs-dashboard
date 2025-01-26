@@ -5,6 +5,7 @@ import {
   InboxIcon,
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
+import { fetchCardData } from '@/app/lib/data';
 
 const iconMap = {
   collected: BanknotesIcon,
@@ -14,20 +15,39 @@ const iconMap = {
 };
 
 export default async function CardWrapper() {
-  return (
-    <>
-      {/* NOTE: Uncomment this code in Chapter 9 */}
+  try {
+    const {
+      totalPaidInvoices,
+      totalPendingInvoices,
+      numberOfInvoices,
+      numberOfCustomers,
+    } = await fetchCardData();
 
-      {/* <Card title="Collected" value={totalPaidInvoices} type="collected" />
-      <Card title="Pending" value={totalPendingInvoices} type="pending" />
-      <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-      <Card
-        title="Total Customers"
-        value={numberOfCustomers}
-        type="customers"
-      /> */}
-    </>
-  );
+    return (
+      <>
+        <Card title="Collected" value={totalPaidInvoices} type="collected" />
+        <Card title="Pending" value={totalPendingInvoices} type="pending" />
+        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+        <Card
+          title="Total Customers"
+          value={numberOfCustomers}
+          type="customers"
+        />
+      </>
+    );
+  } catch (error) {
+    return (
+      <div className="w-full">
+        <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
+          <div className="p-4">
+            <h3 className="text-sm font-medium text-red-500">
+              Error loading card data
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export function Card({
