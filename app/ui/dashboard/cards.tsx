@@ -35,7 +35,7 @@ export default async function CardWrapper() {
         />
       </>
     );
-  } catch (_) {
+  } catch {
     return (
       <div className="w-full">
         <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
